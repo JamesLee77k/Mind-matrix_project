@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "MindMatrix"
+description = "A brain-training web app with playable cognitive games, personal progress tracking, and an 8085-compatible assembly lab that executes and traces supported instructions."
+version = "1.0.0"
+id = "artifacts/mindmatrix"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21010
+
+[services.development]
+run = "pnpm --filter @workspace/mindmatrix run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/mindmatrix", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/mindmatrix/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21010"
+BASE_PATH = "/"
